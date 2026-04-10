@@ -5,13 +5,13 @@ import JavaScriptObfuscator from 'javascript-obfuscator';
 
 const root = path.resolve('.');
 const srcDir = root;
-const distDir = path.join(root, 'Obf-GP');
+const distDir = path.join(root, 'public');
 
 async function copyToDist() {
   await fse.remove(distDir);
   await fse.ensureDir(distDir);
   // Copy top-level entries except excluded ones to avoid copying a dir into its subdirectory
-  const exclude = new Set(['Obf-GP', 'node_modules', '.git', '.gitignore', 'scripts']);
+  const exclude = new Set(['public', 'Obf-GP', 'node_modules', '.git', '.gitignore', 'scripts']);
   const entries = await fse.readdir(srcDir);
   for (const entry of entries) {
     if (exclude.has(entry)) continue;
@@ -62,7 +62,7 @@ async function main() {
   await copyToDist();
   await obfuscateJS();
   await rewriteIndex();
-  console.log('Build complete. See Obf-GP/ for obfuscated output.');
+  console.log('Build complete. See public/ for obfuscated output.');
 }
 
 main().catch((e) => {
